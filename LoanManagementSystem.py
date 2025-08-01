@@ -1,44 +1,29 @@
-# loan_management.py
-
 import numpy as np
 
-# Loan ID, Principal Amount, Interest Rate (%), Tenure (Years)
+# Dataset: [Customer ID, Name, Loan Amount, Interest Rate %, Tenure in Years]
 loan_data = np.array([
-    [101, 5000, 5, 2],
-    [102, 10000, 4, 5],
-    [103, 7500, 6, 3],
-    [104, 12000, 3, 4],
-    [105, 3000, 7, 1]
-])
+    [101, 'Alice', 5000, 5, 2],
+    [102, 'Bob', 10000, 4.5, 5],
+    [103, 'Charlie', 3000, 6, 1],
+    [104, 'Diana', 8000, 3.5, 4],
+    [105, 'Ethan', 4500, 5.2, 3]
+], dtype=object)
 
-# Function to calculate total repayment amount
-def calculate_total_amount(principal, rate, tenure):
-    total_amount = principal + (principal * rate / 100) * tenure
-    return total_amount
+# 1️⃣ Total loan amount taken by all customers
+def calculate_total_loan(data):
+    return sum([float(row[2]) for row in data])
+# 3️2 Find the customer with the least repayment years
+def find_least_tenure(data):
+    return min(data, key=lambda row: int(row[4]))
 
-# Function to display loan details and total repayment amounts
-def display_loans(loan_data):
-    loan_details = []
-    for loan in loan_data:
-        loan_id, principal, rate, tenure = loan
-        total_amount = calculate_total_amount(principal, rate, tenure)
-        loan_info = f"Loan ID: {loan_id}, Principal: ${principal}, Interest Rate: {rate}%, Tenure: {tenure} years, Total Repayment: ${total_amount:.2f}"
-        print(loan_info)
-        loan_details.append(loan_info)
-    return loan_details
 
-# Function to find the loan with the highest total repayment amount
-def find_highest_repayment(loan_data):
-    highest_loan = max(loan_data, key=lambda x: calculate_total_amount(x[1], x[2], x[3]))
-    return highest_loan
+def main():
+    total_loan = calculate_total_loan(loan_data)
+    print(f"Total Loan Amount Taken by All Customers: ${total_loan}")
 
-# Main function to process loans
-def process_loans():
-    print("Loan Management System")
-    loan_details = display_loans(loan_data)
-    highest_loan = find_highest_repayment(loan_data)
-    print(f"Loan with the highest repayment: {highest_loan[0]}")
-    return loan_details, highest_loan
 
-if __name__ == '__main__':
-    process_loans()
+    fastest = find_least_tenure(loan_data)
+    print(f"Customer with Shortest Repayment Period: {fastest[1]} ({fastest[4]} years)")
+
+if __name__ == "__main__":
+    main()
